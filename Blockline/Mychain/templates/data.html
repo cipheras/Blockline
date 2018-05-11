@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+      
+    <form name="form" action= "{% url 'new_transactions' %}" method="POST">
+    {% csrf_token %}
+        <div style = "max-width:450px;">
+            <center> 
+               <input type = "text" style = "margin-left:20%;" placeholder = "Sender" name = "sender" />
+            </center>
+         </div>
+		 <br>
+        
+        <br>
+        <div style="max-width:450px;">
+            <center>
+                <input type="text" style="margin-left:20%;" placeholder="Receiver" name="receiver"/>
+                
+            </center>
+        </div>
+        <br>
+
+        <br>
+        <div style="max-width:450px;">
+            <center>
+                <input type="number" style="margin-left:20%;" placeholder="Amount" name="amount"/>
+                
+            </center>
+        </div>
+        <br>
+        
+        <br>
+        <div style="max-width:450px;">
+            <center>
+                <input type="text" style="margin-left:20%;" placeholder="ID" name="id"/>
+                
+            </center>
+        </div>
+        <br>
+
+        <br>
+        <div style="max-width:450px;">
+            <center>
+                <input type="text" style="margin-left:20%;" placeholder="Data to store on Blockchain" name="data"/>
+                
+            </center>
+        </div>
+        <br>
+
+        <br>
+        <div style="max-width:470px">
+            <center>
+                <button style="border:0px; background-color:#4285F4; margin-top:8%;
+                    height:35px; width:80%; margin-left:19%;" type="submit" value="Submit">
+                    <strong>Submit</strong>
+                </button>
+            </center>
+        </div>
+    </form>
+
+
+ 
+</body>
+</html>

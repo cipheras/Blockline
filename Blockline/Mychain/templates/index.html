@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body style="background-color:#424949">
+   <div>
+    **<font color=#5DADE2> {{date}} &nbsp||&nbsp {{time}} </font>**
+    </div>
+
+    <div style="margin-bottom:-2.5%; margin-top:1%;">
+        <button type="submit" style="border:5px; background-color:#4285F4; height:25px; width:15%; margin-left:0.3%;" onclick="location.href='{% url 'home' %}';"><strong>My Node</strong></button>
+    
+        <button type="submit" style="border:5px; background-color:#4285F4; height:25px; width:15%; margin-left:1%;" onclick="location.href='{% url 'rd' %}';"><strong>View rate difference</strong></button>
+    
+     </div>
+    <div>
+    <form name="form" action= "{% url 'index' %}" method="POST">
+    {% csrf_token %}
+        <button style="border:5px; background-color:#5B2C6F; height:25px; width:15%; margin-left:0.5%; float:right; margin-right:0.3%;" type="submit" value="Submit"><strong>Submit</strong></button>
+        <input type="text" style="border:5px; background-color:#D2B4DE; height:23px; width:15%; margin-left:0.5%; float:right; text-align:center;" placeholder="Number of coins" name="ncoin" value="{{num}}"> 
+        <div><select style="border:5px; background-color:#D2B4DE; height:25px; width:15%; float:right; text-align:center;" name="cur">
+            <option value="INR">INR</option>
+            <option value="USD">USD</option>
+            <option value="BTC">BTC</option>
+        </select></div>
+    </form>
+    </div>
+    
+    <style>
+        td{text-align:center;background-color:#52BE80} 
+        th{background-color:#45B39D} 
+        .neg{color:#B03A2E;} 
+        .pos{color:#094710;} 
+		.arw{margin-left:20px;}
+        }
+    </style>
+ 
+    <br>
+    <div style="margin-top:1%;">
+    <table id="tb" border="1" align="center" style="width:100%" >
+        <tr><th>Rank</th><th>Coin Name</th><th>Symbol</th><th>Price (in {{cur}})</th><th>Percent change in 1h</th><th>Percent change in 24h</th><th>Percent change in 7d</th></tr>
+        {% for coin in coin %}
+        <tr>
+            <td># {{coin.0}}</td>
+            <td> {{coin.1}} </td>
+			<td> {{coin.2}} </td>
+			<td><b><font color=#5B2C6F> {{coin.3}} </font></b></td>
+
+         
+            {% if coin.4 < 0 %}
+                <td class="neg">{{coin.4}} <span class="arw">&#9660 </span></td>
+            {% else %}
+			    <td class="pos"> {{coin.4}} <span class="arw">&#128314 </span></td>
+			{% endif %}
+         
+
+            
+            {% if coin.5 < 0 %}
+                <td class="neg"> {{coin.5}} <span class="arw">&#9660 </span></td>
+		    {% else %}
+			    <td class="pos"> {{coin.5}} <span class="arw">&#128314 </span></td>
+			{% endif %}	
+            
+
+            
+            {% if coin.6 < 0 %}
+			    <td class="neg"> {{coin.6}} <span class="arw">&#9660 </span></td>
+		    {% else %}
+				<td class="pos"> {{coin.6}} <span class="arw">&#128314 </span></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    
+   
+</body>
+</html>
