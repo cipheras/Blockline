@@ -28,8 +28,8 @@ class RateDif:
             cmk_json = json.loads(cmk_response)
              
             for coin,price in koinex_json['prices']['inr'].items():
-                for items in cmk_json:
-                    if ( items['symbol'] == coin and float(price) != 0):
+               for items in cmk_json:
+                   if ( items['symbol'] == coin and float(price) != 0):
                         perc_diff = ((float(price) - float(items['price_inr']))/float(price))*100
                         
                         k_response.append({
@@ -41,7 +41,7 @@ class RateDif:
                             })
                        
    
-            list = ['BTC','XRP','EOS','LTC','ETH','BCH','OMG','TRX','GNT']
+            list = ['BTC','XRP','EOS','LTC','ETH','BCH','OMG','TRX','GNT','ZRX']
             for items in cmk_json:
                 if ( items['symbol'] in list):
                     zp_response = urllib.request.urlopen(self.zebpay+'ticker-new/'+ items['symbol'] +'/inr').read()
@@ -66,7 +66,7 @@ class RateDif:
 obj = RateDif()
 
 
-def view_rd(request, ex=' '):
+def api_rd(request, ex=' '):
     koi , zeb =  obj.cal()
     if ex == 'z' :
         response = {'zebpay' : zeb }
@@ -78,3 +78,4 @@ def view_rd(request, ex=' '):
                 'koinex' : koi , 
                 }
     return JsonResponse(response, safe=False)
+

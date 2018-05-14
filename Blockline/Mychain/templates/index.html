@@ -6,14 +6,14 @@
     <title></title>
 </head>
 <body style="background-color:#424949">
+     
    <div>
     **<font color=#5DADE2> {{date}} &nbsp||&nbsp {{time}} </font>**
     </div>
 
     <div style="margin-bottom:-2.5%; margin-top:1%;">
         <button type="submit" style="border:5px; background-color:#4285F4; height:25px; width:15%; margin-left:0.3%;" onclick="location.href='{% url 'home' %}';"><strong>My Node</strong></button>
-    
-        <button type="submit" style="border:5px; background-color:#4285F4; height:25px; width:15%; margin-left:1%;" onclick="location.href='{% url 'rd' %}';"><strong>View rate difference</strong></button>
+        <button type="submit" style="border:5px; background-color:#4285F4; height:25px; width:15%; margin-left:1%;" onclick="location.href='{% url 'rd' %}';" name="rd"><strong>View rate difference</strong></button>
     
      </div>
     <div>
@@ -35,7 +35,7 @@
         .neg{color:#B03A2E;} 
         .pos{color:#094710;} 
 		.arw{margin-left:20px;}
-        }
+        
     </style>
  
     <br>

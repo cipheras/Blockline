@@ -4,6 +4,7 @@ Definition of urls for Blockchain.
 
 from django.conf.urls import include, url
 from django.views.generic import TemplateView
+from django.views.generic.base import RedirectView
 from django.contrib import admin
 from Blockchains import chain
 import sys
@@ -19,10 +20,10 @@ urlpatterns = [
     
     url(r'^mynode/',include('Mychain.urls'), name = 'links'),
     
-    url(r'^rate_difference/$', rd.view_rd , name= 'rd' ),
+    url(r'^api/rate_difference/$', rd.api_rd , name= 'rd' ),
 
-    url(r'^rate_difference/(?P<ex>[a-z])/$', rd.view_rd , name= 'rd' ),
+    url(r'^api/rate_difference/(?P<ex>[a-z])/$', rd.api_rd , name= 'rd' ),
     
-
- 
+    # url(r'^favicon.ico$', RedirectView.as_view(url='favicon.ico', permanent=False)),
+    
     ]

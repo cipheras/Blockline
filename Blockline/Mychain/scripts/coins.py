@@ -16,7 +16,6 @@ class Coins:
             response = urllib.request.urlopen(url).read()       
             data = json.loads(response)
             coin = [[] for _ in range(num)]
-            
             for coins in range(num):
                 coin[coins].append(str(data[coins]['rank']))
                 coin[coins].append(str(data[coins]['name']))
@@ -29,7 +28,7 @@ class Coins:
             return coin
 
         except Exception as e:
-            return '<br>Error!! '+ str(e)
+            print('<br>Error!! '+ str(e))
 
 
 def show_coin(request):
