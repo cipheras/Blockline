@@ -12,10 +12,29 @@
     </div>
 
     <div style="margin-bottom:-2.5%; margin-top:1%;">
-        <button type="submit" style="border:5px; background-color:#4285F4; height:25px; width:15%; margin-left:0.3%;" onclick="location.href='{% url 'home' %}';"><strong>My Node</strong></button>
-        <button type="submit" style="border:5px; background-color:#4285F4; height:25px; width:15%; margin-left:1%;" onclick="location.href='{% url 'rd' %}';" name="rd"><strong>View rate difference</strong></button>
-    
-     </div>
+        <button type="submit" style="border:5px; background-color:#3498DB; height:25px; width:15%; margin-left:0.3%;" onclick="location.href='{% url 'home' %}';"><strong>My Node</strong></button>
+       {%comment%} <button type="submit" style="border:5px; background-color:#4285F4; height:25px; width:15%; margin-left:1%;" onclick="location.href='{% url 'rd' %}';" name="rd"><strong>View rate difference</strong></button>{%endcomment%}
+        
+        <select style="border:5px; background-color:#3498DB; height:25px; width:20%; text-align:center; text-align:center;" id="ex" onchange="exChange(this.selectedIndex);">
+        <option>Exchange(rate difference)</option>
+        <option value="k">Koinex</option>
+        <option value="z">Zebpay</option>
+        <option value="a">All</option>
+        </select>
+    </div>
+    <script>
+        function exChange(index) {
+            var exh = document.getElementById("ex").options[index].value;
+            if(exh=="k"){
+            location.href="{% url 'rd' ex="k" %} " ;}
+            else
+            if(exh=="z"){
+            {location.href="{% url 'rd' ex="z" %} " ;}
+            else
+            {location.href="{% url 'rd' ex="a" %} " ;}
+          }
+    </script>
+
     <div>
     <form name="form" action= "{% url 'index' %}" method="POST">
     {% csrf_token %}
@@ -39,7 +58,7 @@
     </style>
  
     <br>
-    <div style="margin-top:1%;">
+    <div style="margin-top:1%;" id="cointab">
     <table id="tb" border="1" align="center" style="width:100%" >
         <tr><th>Rank</th><th>Coin Name</th><th>Symbol</th><th>Price (in {{cur}})</th><th>Percent change in 1h</th><th>Percent change in 24h</th><th>Percent change in 7d</th></tr>
         {% for coin in coin %}

@@ -46,3 +46,4 @@ def login(request):
 '''
 def mynode(request):
     return render(request, 'bc.html')
+
