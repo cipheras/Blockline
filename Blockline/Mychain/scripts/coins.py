@@ -16,13 +16,13 @@ class Coins:
             data = json.loads(response)
             coin = [[] for _ in range(num)]
             for coins in range(num):
-                coin[coins].append(str(data[coins]['rank']))
-                coin[coins].append(str(data[coins]['name']))
-                coin[coins].append(str(data[coins]['symbol']))
+                coin[coins].append(data[coins]['rank'])
+                coin[coins].append(data[coins]['name'])
+                coin[coins].append(data[coins]['symbol'])
                 coin[coins].append(round(float(data[coins]['price_'+ cur.lower()]),2))
-                coin[coins].append(float(data[coins]['percent_change_1h']))
-                coin[coins].append(float(data[coins]['percent_change_24h'])) 
-                coin[coins].append(float(data[coins]['percent_change_7d']))
+                coin[coins].append(float(0 if data[coins]['percent_change_1h'] is None else data[coins]['percent_change_1h'] ))
+                coin[coins].append(float(0 if data[coins]['percent_change_24h'] is None else data[coins]['percent_change_24h'] ))
+                coin[coins].append(float(0 if data[coins]['percent_change_7d'] is None else data[coins]['percent_change_7d'] ))
             
             return coin
 
@@ -35,7 +35,7 @@ def show_coin(request):
     num = request.POST.get('ncoin')
     cur = request.POST.get('cur')
     cur = 'INR' if cur is None or cur is '' else cur
-    num = 10 if num is None or num is '' or int(num) > 400 else int(num)
+    num = 10 if num is None or num is '' or int(num)>400 else int(num)
     return render(request, 'index.html', {'date':obj.date,'time':obj.time,'coin':obj.data(cur,num),'cur':cur,'num':num})
     
 

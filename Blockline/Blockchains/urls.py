@@ -24,8 +24,6 @@ urlpatterns = [
 
     url(r'^api/rate_difference/(?P<ex>[a-z])/$', rd.api_rd , name= 'rd' ),
     
-   
-    
-    # url(r'^favicon.ico$', RedirectView.as_view(url='favicon.ico', permanent=False)),
+
     
     ]
