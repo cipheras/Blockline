@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^api/rate_difference/$', rd.api_rd , name= 'rd' ),
 
     url(r'^api/rate_difference/(?P<ex>[a-z])/$', rd.api_rd , name= 'rd' ),
+
+    url(r'^api/rate_difference/(?P<ex>[a-z])/(?P<mk>btc|inr)/$', rd.api_rd , name= 'rd' ),
     
 
     

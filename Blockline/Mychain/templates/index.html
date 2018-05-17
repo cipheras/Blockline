@@ -11,12 +11,12 @@
     **<font color=#5DADE2> {{date}} &nbsp||&nbsp {{time}} </font>**
     </div>
 
-    <div style="margin-bottom:-2.5%; margin-top:1%;">
+    <div style="margin-bottom:-1.5%; margin-top:1%;">
         <button type="submit" style="border:5px; background-color:#3498DB; height:25px; width:15%; margin-left:0.3%;" onclick="location.href='{% url 'home' %}';"><strong>My Node</strong></button>
        {%comment%} <button type="submit" style="border:5px; background-color:#4285F4; height:25px; width:15%; margin-left:1%;" onclick="location.href='{% url 'rd' %}';" name="rd"><strong>View rate difference</strong></button>{%endcomment%}
         
-        <select style="border:5px; background-color:#3498DB; height:25px; width:20%; text-align:center; text-align:center;" id="ex" onchange="exChange(this.selectedIndex);">
-        <option>Exchange(rate difference)</option>
+        <select style="border:5px; background-color:#3498DB; height:25px; width:20%; text-align:center;  margin-left:1%" id="ex" onchange="exChange(this.selectedIndex);">
+        <option value="#">Exchange(rate difference)</option>
         <option value="k">Koinex</option>
         <option value="z">Zebpay</option>
         <option value="a">All</option>
@@ -39,7 +39,7 @@
     <form name="form" action= "{% url 'index' %}" method="POST">
     {% csrf_token %}
         <button style="border:5px; background-color:#5B2C6F; height:25px; width:15%; margin-left:0.5%; float:right; margin-right:0.3%;" type="submit" value="Submit"><strong>Submit</strong></button>
-        <input type="text" style="border:5px; background-color:#D2B4DE; height:23px; width:15%; margin-left:0.5%; float:right; text-align:center;" placeholder="Number of coins" name="ncoin" value="{{num}}"> 
+        <input type="number" style="border:5px; background-color:#D2B4DE; height:23px; width:15%; margin-left:0.5%; float:right; text-align:center;" placeholder="Number of coins" name="ncoin" value="{{num}}"> 
         <div><select style="border:5px; background-color:#D2B4DE; height:25px; width:15%; float:right; text-align:center;" name="cur">
             <option value="INR">INR</option>
             <option value="USD">USD</option>
