@@ -31,5 +31,6 @@ urlpatterns = [
      
     url(r'^register/', TemplateView.as_view(template_name = 'register.html'), name = 'register'),
 
+    url(r'^resolve/', chain.consensus, name='consensus'), 
     
    ]

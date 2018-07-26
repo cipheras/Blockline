@@ -315,5 +315,5 @@ if __name__ == '__main__':
 
 # demomine()
 # bootstrap()
-resolve()
+#resolve()
 blockchain.register_node('http://technoboy.pythonanywhere.com')

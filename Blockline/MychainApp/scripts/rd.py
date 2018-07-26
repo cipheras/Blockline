@@ -19,8 +19,8 @@ class RateDif(object):
         self.time = datetime.datetime.now().time().strftime('%I:%M %p')
         self.cmk_response = urllib.request.urlopen(self.cmk).read()
         self.cmk_json = json.loads(self.cmk_response)
-        self.new_cmk_response = urllib.request.urlopen(self.cmk).read()
-        self.new_cmk_json = json.loads(self.cmk_response)
+        self.new_cmk_response = urllib.request.urlopen(self.new_cmk).read()
+        self.new_cmk_json = json.loads(self.new_cmk_response)
         
         self.zeb_coins = set()
         #self.getZebpayCoins()
@@ -115,7 +115,7 @@ class RateDif(object):
                 if market != i : 
                     url = self.new_zebpay + i + '/' + market
                     print(url)
-                    zebpay_req = urllib.request.Request(self.new_zebpay, headers = {'user-agent':'Mozilla/5.0'})
+                    zebpay_req = urllib.request.Request(self.new_zebpay, headers = {'User-Agent':'Mozilla/5.0'})
                     print(zebpay_req)
                     zebpay_response = urllib.request.urlopen(zebpay_req).read()
                     print(zebpay_response)
@@ -177,33 +177,25 @@ class RateDif(object):
     def cal_bitbns(self):
         try:
             bitbns_res = {}
-            bitbns_request = urllib.request.Request(self.bitbns , headers={'User-Agent': 'Mozilla/5.0'})
+            bitbns_request = urllib.request.Request(self.bitbns , headers={'User-Agent':'Mozilla/5.0'})
             bitbns_response = urllib.request.urlopen(bitbns_request).read()
 
-            for coins in bitbns_response :
-                for items in self.cmk_json :
-                    if float(bitbns_response[coins]['last_traded_price']) != 0  :
-                        perc_diff = ( (bitbns_response[coins]['last_traded_price'] - float(items['price_inr']) ) / float(bitbns_response[coins]['last_traded_price']) )*100
-                        
-                        bitbns_res.update({coins:{
-                            "bitbns_price" : bitbns_response[coins]['last_traded_price'],
-                            "global_price" : items['price_inr'],
-                            "rate_diff" : str(perc_diff), 
+            for coin,data in bitbns_response.items() :
+                for rank,values in self.new_cmk_json['data'].items() :
+                    if values['symbol'] == coin and int(data['lowest_sell_bid']) != 0 and int(data['highest_buy_bid']) != 0 :
+                        buy_diff = int(( (float(data['lowest_sell_bid']) - float(values['quotes']['INR']['price']) )/ float(data['lowest_sell_bid']) )*100)
+                        sell_diff = int(( (float(data['highest_buy_bid']) - float(values['quotes']['INR']['price']) )/ float(data['highest_buy_bid']) )*100)
+                        res = {
+                            "buy_diff" : str(buy_diff),
+                            "sell_diff" : str(sell_diff), 
+                            "global_price" : str(values['quotes']['INR']['price']),
                             "timestamp" : self.date+' '+self.time,
-                            }})
+                            }
+                        bitbns_res.update({coin : res})
             return bitbns_res
 
         except Exception as e:
             return {"error":str(e)}
-
-
-#Get list of coin in zebpay
-#if __name__ == '__main__':
-#    obj = RateDif()
-#    obj.getZebpayCoins()
-#    if obj.getZebpayCoins() is False:
-#         obj.zeb_coins  = ['BTC','BCH','LTC','XRP','EOS','OMG','TRX','GNT','ZRX','REP','KNC','BAT','VEN','AE','ZIL','CMT','NCASH']
-
 
 
 #Creating APIs

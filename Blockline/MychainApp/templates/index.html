@@ -19,6 +19,7 @@
         <option value="#">Exchange(rate difference)</option>
         <option value="k">Koinex</option>
         <option value="z">Zebpay</option>
+        <option value="b">Bitbns</option>
         <option value="a">All</option>
         </select>
     </div>
@@ -70,25 +71,25 @@
 
          
             {% if coin.4 < 0 %}
-                <td class="neg">{{coin.4}} <span class="arw">&#9660 </span></td>
+                <td class="neg">{{coin.4}} <span class="arw">&darr;	 </span></td>
             {% else %}
-			    <td class="pos"> {{coin.4}} <span class="arw">&#128314 </span></td>
+			    <td class="pos"> {{coin.4}} <span class="arw">&uarr; </span></td>
 			{% endif %}
          
 
             
             {% if coin.5 < 0 %}
-                <td class="neg"> {{coin.5}} <span class="arw">&#9660 </span></td>
+                <td class="neg"> {{coin.5}} <span class="arw">&darr; </span></td>
 		    {% else %}
-			    <td class="pos"> {{coin.5}} <span class="arw">&#128314 </span></td>
+			    <td class="pos"> {{coin.5}} <span class="arw">&uarr; </span></td>
 			{% endif %}	
             
 
             
             {% if coin.6 < 0 %}
-			    <td class="neg"> {{coin.6}} <span class="arw">&#9660 </span></td>
+			    <td class="neg"> {{coin.6}} <span class="arw">&darr; </span></td>
 		    {% else %}
-				<td class="pos"> {{coin.6}} <span class="arw">&#128314 </span></td>
+				<td class="pos"> {{coin.6}} <span class="arw">&uarr; </span></td>
             {% endif %}
         </tr>
         {% endfor %}
