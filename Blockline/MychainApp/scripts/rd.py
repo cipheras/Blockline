@@ -14,7 +14,7 @@ class RateDif(object):
         self.zebpay = "https://www.zebapi.com/api/v1/market/"
         self.new_zebpay = "https://www.zebapi.com/api/v1/market/ticker-new/"
         self.cmk = "https://api.coinmarketcap.com/v1/ticker?convert=INR&limit=60" 
-        self.new_cmk = "https://api.coinmarketcap.com/v2/ticker/?sort=rank&convert=INR&limit=100"
+        self.new_cmk = "https://api.coinmarketcap.com/v2/ticker/?sort=rank&convert=INR&limit=50"
         self.date = datetime.date.today().strftime('%d-%m-%Y')
         self.time = datetime.datetime.now().time().strftime('%I:%M %p')
         self.cmk_response = urllib.request.urlopen(self.cmk).read()
@@ -68,6 +68,7 @@ class RateDif(object):
                         inr_z_response.update({ci['symbol'] : {
                             "buy_diff" : str(inr_buy_perc_diff) ,
                             "sell_diff" : str(inr_sell_perc_diff),
+                            "market_price": zi['market'],
                             "global_price" : ci['price_inr'],
                             "timestamp" : self.date+' '+self.time,
                             }})
@@ -79,6 +80,7 @@ class RateDif(object):
                         btc_z_response.update({ci['symbol'] : {
                             "buy_diff" : str(btc_buy_perc_diff) ,
                             "sell_diff" : str(btc_sell_perc_diff),
+                            "market_price": zi['market'],
                             "global_price" : ci['price_btc'],
                             "timestamp" : self.date+' '+self.time,
                             }})
@@ -99,12 +101,12 @@ class RateDif(object):
             zebpay_response = urllib.request.urlopen(zebpay_req).read()
             zebpay_json = json.loads(zebpay_response)
             for zi in zebpay_json:
-                zeb_coins.add(zi['virtualCurrency'])
+                self.zeb_coins.add(zi['virtualCurrency'])
             return True
         except Exception as e:
             return False
 
-    def calNewZebpay(self,market='INR'):
+    def calNewZebpay(self,market):
         market = market.upper()
         try:
             inr_z_response = {}
@@ -114,58 +116,36 @@ class RateDif(object):
             for i in self.zeb_coins: 
                 if market != i : 
                     url = self.new_zebpay + i + '/' + market
-                    print(url)
-                    zebpay_req = urllib.request.Request(self.new_zebpay, headers = {'User-Agent':'Mozilla/5.0'})
-                    print(zebpay_req)
+                    zebpay_req = urllib.request.Request(url , headers = {'User-Agent':'Mozilla/5.0'})
                     zebpay_response = urllib.request.urlopen(zebpay_req).read()
-                    print(zebpay_response)
                     coin = json.loads(zebpay_response)
                     for j,k in self.new_cmk_json['data'].items():
-                        if i is k['symbol'] and coin['market'] != 0 : 
-                        
+                        if i == k['symbol'] and coin['market'] != 0 : 
                             buy_perc_diff = int(( (float(coin['buy']) - float(k['quotes'][market]['price'])) / float(coin['buy']) ) *100 )
                             sell_perc_diff = int(( (float(coin['sell']) - float(k['quotes'][market]['price'])) / float(coin['sell']) ) *100 )
                         
-                            if market is 'INR' : 
+                            if market == 'INR' : 
                                 inr_z_response.update({
-                                    "coin" : {
+                                    i : {
                                     "buy_diff" : buy_perc_diff,
                                     "sell_diff" : sell_perc_diff,
+                                    "market_price": coin['market'],
                                     "global_price" : k['quotes'][market]['price'],
                                     "timestamp" : self.date+' '+self.time,
                                     }})
-                            elif market is 'BTC' :
+                            elif market == 'BTC' :
                                 btc_z_response.update({
-                                    "coin" : {
+                                    i : {
                                     "buy_diff" : buy_perc_diff,
                                     "sell_diff" : sell_perc_diff,
+                                    "market_price": coin['market'],
                                     "global_price" : k['quotes'][market]['price'],
                                     "timestamp" : self.date+' '+self.time,
                                     }})
-                            else : 
-                                inr_z_response.update({
-                                    "coin" : {
-                                    "buy_diff" : buy_perc_diff,
-                                    "sell_diff" : sell_perc_diff,
-                                    "global_price" : k['quotes'][market]['price'],
-                                    "timestamp" : self.date+' '+self.time,
-                                    }})
-                                btc_z_response.update({
-                                    "coin" : {
-                                    "buy_diff" : buy_perc_diff,
-                                    "sell_diff" : sell_perc_diff,
-                                    "global_price" : k['quotes'][market]['price'],
-                                    "timestamp" : self.date+' '+self.time,
-                                    }})
-                        #For XYZ/XYZ coin situation
-                        else:
-                             if market is 'INR' :
-                                inr_z_response.update({i : "not found"})
-                             elif market is 'BTC' :
-                                btc_z_response.update({i : "not found"})
-            if market is 'INR' :
+                           
+            if market == 'INR' :
                 return inr_z_response
-            elif market is 'BTC' :
+            elif market == 'BTC' :
                 return btc_z_response
             else:
                 return inr_z_response,btc_z_response
@@ -179,8 +159,9 @@ class RateDif(object):
             bitbns_res = {}
             bitbns_request = urllib.request.Request(self.bitbns , headers={'User-Agent':'Mozilla/5.0'})
             bitbns_response = urllib.request.urlopen(bitbns_request).read()
+            bitbns_json = json.loads(bitbns_response)
 
-            for coin,data in bitbns_response.items() :
+            for coin,data in bitbns_json.items() :
                 for rank,values in self.new_cmk_json['data'].items() :
                     if values['symbol'] == coin and int(data['lowest_sell_bid']) != 0 and int(data['highest_buy_bid']) != 0 :
                         buy_diff = int(( (float(data['lowest_sell_bid']) - float(values['quotes']['INR']['price']) )/ float(data['lowest_sell_bid']) )*100)
@@ -188,6 +169,7 @@ class RateDif(object):
                         res = {
                             "buy_diff" : str(buy_diff),
                             "sell_diff" : str(sell_diff), 
+                            "market_price" : data['last_traded_price'],
                             "global_price" : str(values['quotes']['INR']['price']),
                             "timestamp" : self.date+' '+self.time,
                             }
@@ -214,7 +196,9 @@ def api_rd(request, ex=' ' , mk=' '):
                 response = {'zebpay' : {'inr_market' : inr_zeb}
                                     }
             else :
-                inr_zeb, btc_zeb = obj.calNewZebpay(mk)
+                inr_zeb, btc_zeb = obj.cal_zebpay()
+                #btc_zeb = obj.calNewZebpay('BTC')
+                #inr_zeb = obj.calNewZebpay('INR')
                 response = {'zebpay' : {'inr_market' : inr_zeb, 
                                     'btc_market' : btc_zeb}
                                     }
